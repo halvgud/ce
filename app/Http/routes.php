@@ -3,12 +3,35 @@
 $app->group(['middleware' => 'auth','namespace' => 'App\Http\Controllers'], function() use ($app) {
 	$app->get('menuItems/', ['uses' => 'MenuItemsController@getitems', ]);
 
-	$app->get('descriptions/{type}', ['uses' => 'MenuItemsController@getDescriptions', ]);
+	//$app->get('descriptions/{type}', ['uses' => 'MenuItemsController@getDescriptions', ]);
 
-	$app->group(['prefix' => 'stores','namespace' => 'App\Http\Controllers'], function() use ($app) {
-		$app->post('/', ['uses' => 'StoresController@postStores', ]);
-		$app->get('/{search}', ['uses' => 'StoresController@getStores', ]);
+	$app->group(['prefix' => 'store','namespace' => 'App\Http\Controllers'], function() use ($app) {
+		$app->post('/', ['uses' => 'StoreController@postStore', ]);
+		$app->get('/', ['uses' => 'StoreController@getStores', ]);
+		$app->get('/{search}', ['uses' => 'StoreController@getStore', ]);
+		$app->delete('/{id}', ['uses' => 'StoreController@delete', ]);
 	});
+
+	$app->group(['prefix' => 'user','namespace' => 'App\Http\Controllers'], function() use ($app) {
+		$app->post('/', ['uses' => 'UserController@postUser', ]);
+		$app->get('/', ['uses' => 'UserController@getUsers', ]);
+		$app->get('/{search}', ['uses' => 'UserController@getUser', ]);
+		$app->delete('/{id}', ['uses' => 'UserController@delete', ]);
+	});
+	$app->group(['prefix' => 'car','namespace' => 'App\Http\Controllers'], function() use ($app) {
+		$app->post('/', ['uses' => 'CarController@postCar', ]);
+		$app->get('/', ['uses' => 'CarController@getCars', ]);
+		$app->get('/{search}', ['uses' => 'CarController@getCar', ]);
+		$app->delete('/{id}', ['uses' => 'CarController@delete', ]);
+	});
+	$app->group(['prefix' => 'customer','namespace' => 'App\Http\Controllers'], function() use ($app) {
+		$app->post('/', ['uses' => 'CustomerController@postCustomer', ]);
+		$app->get('/', ['uses' => 'CustomerController@getCustomers', ]);
+		$app->get('/{search}', ['uses' => 'CustomerController@getCustomer', ]);
+		$app->delete('/{id}', ['uses' => 'CustomerController@delete', ]);
+	});
+	$app->get('description/{type}', ['uses' => 'DescriptionController@get', ]);
+
 });
 
 $app->post('login/', ['uses' => 'LoginController@login', ]);

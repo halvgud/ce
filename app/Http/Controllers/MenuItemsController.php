@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Helpers\Response;
+use App\Models\MenuItem;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Parsing\Encoder;
@@ -22,19 +23,22 @@ class MenuItemsController extends Controller
 
     public function getitems()
     {
-        $items = DB::table('menu')->get();
-        if($items) {
-            return Response::json($items);
-        }
+        $menuItems = MenuItem::all();
 
-        return Response::internalError('Unable to create the user');
+        return Response::json($menuItems);
+
+        // $items = DB::table('menu')->get();
+        // if($items) {
+        //     return Response::json($items);
+        // }
+
+        // return Response::internalError('Unable to create the user');
     }
 
     public function getDescriptions($type){
-        $items = DB::table('descriptions')->select('description_id as id','description')
+        $items = DB::table('menu')->select('id','title')
                     ->where([
-                        ['type','=', $type],
-                        ['state','=',1]
+                        ['type','=', $type]
                             ])->get();
         if($items) {
             return Response::json($items);

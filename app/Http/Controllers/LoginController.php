@@ -26,22 +26,22 @@ class LoginController extends Controller
             $username = $this->request->input('username');
             $pw = $this->request->input('password');
             // $password = password_hash($pw, PASSWORD_DEFAULT);
-            $user = DB::table('users')->select('user_id','password')->where('username', $username)->first();
+            $user = DB::table('users')->select('id','password')->where('username', $username)->first();
             if(password_verify($pw, $user->password)){
                 $signer = new Sha256();
                 $token = (new Builder())->setIssuer('clint_eastwood') // Configures the issuer (iss claim)
-                                        ->setAudience('kids_with_guns') // Configures the audience (aud claim)
-                                        ->setId($user->user_id, true) // Configures the id (jti claim), replicating as a header item
+                                        ->setAudience('kwg') // Configures the audience (aud claim)
+                                        ->setId($user->id, true) // Configures the id (jti claim), replicating as a header item
                                         ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
                                         ->setNotBefore(time()) // Configures the time that the token can be used (nbf claim)
-                                        ->setExpiration(time() + 3600) // Configures the expiration time of the token (nbf claim)
-                                        ->set('uid', $user->user_id) // Configures a new claim, called "uid"
+                                        ->setExpiration(time() + 86400) // Configures the expiration time of the token (nbf claim)
+                                        ->set('uid', $user->id) // Configures a new claim, called "uid"
                                         ->sign($signer, 'testing') // creates a signature using "testing" as key
                                         ->getToken(); // Retrieves the generated token
                 $expiration = $token->getClaim('exp');
                 $expoToken = md5($expiration);
                 $affected = DB::table('users')
-                    ->where('user_id', $user->user_id)
+                    ->where('id', $user->id)
                     ->update(['user_token' => $expoToken]);
                 if($affected > 0){
                     return Response::json((string)$token);

@@ -51,7 +51,7 @@ class Authenticate
             $expoToken = md5($expiration);
             if($token->verify($signer, $key) && $token->validate($data)){
                 $user = DB::table('users')->where([
-                                ['user_id', '=', $uid],
+                                ['id', '=', $uid],
                                 ['user_token', '=', $expoToken],
                             ])->count();
                 if($user>0){
