@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Helpers\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,6 +46,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+
+
+        if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+        return Response::notFound('Resource not found');
+    } elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        return Response::notFound('Endpoint not found');
     }
+
+    return Response::badRequest($e->getMessage().'asd'.get_class($e));
+
+        //return parent::render($request, $e);
+    }
+
 }

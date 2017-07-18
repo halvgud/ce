@@ -43,7 +43,7 @@ class Authenticate
         $data = new ValidationData(); // It will use the current time to validate (iat, nbf and exp)
 
         $stringtkn = $request->header('x-auth-token');
-        if($stringtkn){
+        if($stringtkn && $stringtkn !== ''){
             $key = env('token_key','someStupidThing');
             $token = (new Parser())->parse((string) $stringtkn);
             $expiration = $token->getClaim('exp');
@@ -51,7 +51,7 @@ class Authenticate
             $expoToken = md5($expiration);
             if($token->verify($signer, $key) && $token->validate($data)){
                 $user = DB::table('users')->where([
-                                ['user_id', '=', $uid],
+                                ['id', '=', $uid],
                                 ['user_token', '=', $expoToken],
                             ])->count();
                 if($user>0){
