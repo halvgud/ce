@@ -24,6 +24,7 @@ $app->group(['middleware' => 'auth','namespace' => 'App\Http\Controllers'], func
 		$app->get('/{search}', ['uses' => 'CarController@getCar', ]);
 		$app->delete('/{id}', ['uses' => 'CarController@delete', ]);
 	});
+
 	$app->group(['prefix' => 'customer','namespace' => 'App\Http\Controllers'], function() use ($app) {
 		$app->post('/', ['uses' => 'CustomerController@postCustomer', ]);
 		$app->get('/', ['uses' => 'CustomerController@getCustomers', ]);
