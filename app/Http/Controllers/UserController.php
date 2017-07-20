@@ -50,15 +50,29 @@ class UserController extends Controller
         return Response::json($users);
     }
 
-    public function getUser($search){
+    public function getUserByName($search){
         // $items = DB::table('stores')->select('id','description','tag','address')
         //             ->where([
         //                 ['description','like', '%'.$search.'%'],
         //                 ['state','=',1]
         //                     ])->get();
         $users = User::where([
-                        ['first_name','like', '%'.$search.'%']
+                        ['first_name','like', '%'.$search.'%'],
+                        ['status','=',1]
                             ])->get();
+        if($users) {
+            return Response::json($users);
+        }
+
+        return Response::internalError('Unable to create the store');   
+    }
+    public function getUserById($search){
+        // $items = DB::table('stores')->select('id','description','tag','address')
+        //             ->where([
+        //                 ['description','like', '%'.$search.'%'],
+        //                 ['state','=',1]
+        //                     ])->get();
+        $users = User::find($search);
         if($users) {
             return Response::json($users);
         }

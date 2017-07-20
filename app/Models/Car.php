@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Model implements
+class Car extends Model implements
     AuthenticatableContract,
     AuthorizableContract
 {
@@ -30,12 +30,13 @@ class User extends Model implements
      * @var array
      */
     protected $hidden = [
-    'password','user_token','deleted_at',
+
+        'password','user_token','deleted_at','username',
     ];
 
     //SoftDeletes is used to enable soft deletes on this model
-     use SoftDeletes;
-     /**
+    use SoftDeletes;
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array

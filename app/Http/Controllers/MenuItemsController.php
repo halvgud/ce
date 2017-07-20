@@ -36,7 +36,7 @@ class MenuItemsController extends Controller
     }
 
     public function getDescriptions($type){
-        $items = DB::table('descriptions')->select('id','description')
+        $items = DB::table('menu')->select('id','title')
                     ->where([
                         ['type','=', $type]
                             ])->get();

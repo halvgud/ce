@@ -30,6 +30,7 @@ class LoginController extends Controller
             if(password_verify($pw, $user->password)){
                 $signer = new Sha256();
                 $token = (new Builder())->setIssuer('clint_eastwood') // Configures the issuer (iss claim)
+                                       // ->setAudience('kwg') // Configures the audience (aud claim)
                                         ->setAudience('kids_with_guns') // Configures the audience (aud claim)
                                         ->setId($user->id, true) // Configures the id (jti claim), replicating as a header item
                                         ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
