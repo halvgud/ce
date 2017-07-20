@@ -30,8 +30,7 @@ class User extends Model implements
      * @var array
      */
     protected $hidden = [
-
-    'password','user_token','deleted_at','username',
+    'password','user_token','deleted_at',
     ];
 
     //SoftDeletes is used to enable soft deletes on this model

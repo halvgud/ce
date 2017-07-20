@@ -15,7 +15,8 @@ $app->group(['middleware' => 'auth','namespace' => 'App\Http\Controllers'], func
 	$app->group(['prefix' => 'user','namespace' => 'App\Http\Controllers'], function() use ($app) {
 		$app->post('/', ['uses' => 'UserController@postUser', ]);
 		$app->get('/', ['uses' => 'UserController@getUsers', ]);
-		$app->get('/{search}', ['uses' => 'UserController@getUser', ]);
+		$app->get('search/{search}', ['uses' => 'UserController@getUserByName', ]);
+		$app->get('/{id}', ['uses' => 'UserController@getUserById', ]);
 		$app->delete('/{id}', ['uses' => 'UserController@delete', ]);
 	});
 	$app->group(['prefix' => 'car','namespace' => 'App\Http\Controllers'], function() use ($app) {
