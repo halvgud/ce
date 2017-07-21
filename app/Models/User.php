@@ -21,8 +21,9 @@ class User extends Model implements
      * @var array
      */
     protected $fillable = [
-        'first_name', 'email',
-    ];
+            'username','email','first_name','last_name','second_last_name',
+            'gender_id','rol_id','store_id','password','status','user_token',    
+];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,8 +31,24 @@ class User extends Model implements
      * @var array
      */
     protected $hidden = [
-    'password','user_token','deleted_at',
+    'password','user_token','deleted_at','gender_id','store_id',
     ];
+
+    /**
+     * Get the phone record associated with the user.
+     */
+    public function gender()
+    {
+        return $this->belongsTo('App\Models\Description','gender_id');
+    }
+
+    /**
+     * Get the phone record associated with the user.
+     */
+    public function store()
+    {
+        return $this->belongsTo('App\Models\Store');
+    }
 
     //SoftDeletes is used to enable soft deletes on this model
      use SoftDeletes;
