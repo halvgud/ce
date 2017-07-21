@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Response;
 use App\Models\User;
+use App\Models\Description;
+use App\Models\Store;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,27 +23,32 @@ class UserController extends Controller
     public function postUser(Request $request)
     {   
         $user = new User;
-        // $user = $this->request->input('store');
-        // foreach ($user as $key => $value) {
-            
-        // }
+        $data = $request->all();
         if($user) {
-            $user->username = $this->request->input('username');
-            $user->email = $this->request->input('email');
-            $user->first_name = $this->request->input('first_name');
-            $user->last_name = $this->request->input('last_name');
-            $user->second_last_name = $this->request->input('second_last_name');
-            $user->gender_id = $this->request->input('gender_id');
-            $user->rol_id = $this->request->input('rol_id');
-            $user->store_id = $this->request->input('store_id');
+            $user->fill($data);
             $user->password = password_hash($this->request->input('password'), PASSWORD_DEFAULT);
-            $user->status = 1;
 
             $user->save();
             return Response::created($user);
         }
 
         return Response::internalError('Unable to create the store');
+    }
+    public function editUser(Request $request){
+        $data = $request->all();
+        $user = User::with(['gender','store'])->find($data['id']);
+        $gender =(isset($data['gender']) && isset($data['gender']['id']))?Description::find($data['gender']['id']):'';
+        $store =(isset($data['store']) && isset($data['store']['id']))?Store::find($data['store']['id']):'';
+        if($user) {
+            $user->fill($data);
+            if($gender)
+                $user->gender()->associate($gender);
+            if($store)
+                $user->store()->associate($store);
+            $user->save();
+            return Response::created($user);
+        }
+        return Response::internalError('Unable save user data');
     }
 
     public function getUsers(){
@@ -51,11 +58,6 @@ class UserController extends Controller
     }
 
     public function getUserByName($search){
-        // $items = DB::table('stores')->select('id','description','tag','address')
-        //             ->where([
-        //                 ['description','like', '%'.$search.'%'],
-        //                 ['state','=',1]
-        //                     ])->get();
         $users = User::where([
                         ['first_name','like', '%'.$search.'%'],
                         ['status','=',1]
@@ -67,12 +69,7 @@ class UserController extends Controller
         return Response::internalError('Unable to create the store');   
     }
     public function getUserById($search){
-        // $items = DB::table('stores')->select('id','description','tag','address')
-        //             ->where([
-        //                 ['description','like', '%'.$search.'%'],
-        //                 ['state','=',1]
-        //                     ])->get();
-        $users = User::find($search);
+        $users = User::with(['gender','store'])->find($search);
         if($users) {
             return Response::json($users);
         }

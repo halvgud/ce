@@ -14,6 +14,7 @@ $app->group(['middleware' => 'auth','namespace' => 'App\Http\Controllers'], func
 
 	$app->group(['prefix' => 'user','namespace' => 'App\Http\Controllers'], function() use ($app) {
 		$app->post('/', ['uses' => 'UserController@postUser', ]);
+		$app->post('/edit', ['uses' => 'UserController@editUser', ]);
 		$app->get('/', ['uses' => 'UserController@getUsers', ]);
 		$app->get('search/{search}', ['uses' => 'UserController@getUserByName', ]);
 		$app->get('/{id}', ['uses' => 'UserController@getUserById', ]);
