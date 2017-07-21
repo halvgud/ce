@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class Car extends Model implements
+class CarBrand extends Model implements
     AuthenticatableContract,
     AuthorizableContract
 {
@@ -20,9 +20,9 @@ class Car extends Model implements
      *
      * @var array
      */
-    protected $fillable = [
+    /*protected $fillable = [
         'license_plate', 'driver',
-    ];
+    ];*/
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,7 +30,7 @@ class Car extends Model implements
      * @var array
      */
     protected $hidden = [
-        'deleted_at'
+        'deleted_at','updated_at','created_at'
     ];
 
     //SoftDeletes is used to enable soft deletes on this model

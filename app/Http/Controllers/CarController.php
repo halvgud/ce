@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Response;
 use App\Models\Car;
+use App\Models\CarBrand;
+use App\Models\CarModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +57,18 @@ class CarController extends Controller
 
         return Response::json($sales);
     }
+    public function getCarBrands(){
+        $brand = CarBrand::all();
+        return Response::json($brand);
+    }
+    public function getCarModels($search){
+        $model = CarModel::where([
+                        ['car_brand_id','=',$search]])->get();
+        if($model){
+            return Response::json($model);
+        }
+        return Response::internalError('Error al guardar el vehiculo');
+    }
 
     public function getCar($search){
         // $items = DB::table('stores')->select('id','description','tag','address')
@@ -63,8 +77,7 @@ class CarController extends Controller
         //                 ['state','=',1]
         //                     ])->get();
         $sales = Car::where([
-                        ['name','like', '%'.$search.'%'],
-                        ['status','=',1]
+                        ['license_plate','like', '%'.$search.'%']
                             ])->get();
         if($sales) {
             return Response::json($sales);
@@ -72,6 +85,8 @@ class CarController extends Controller
 
         return Response::internalError('Error al guardar el vehiculo');
     }
+
+
     public function delete($id){
         $store = Car::find($id);
         return Response::json($store->delete());

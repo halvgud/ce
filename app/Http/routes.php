@@ -20,6 +20,8 @@ $app->group(['middleware' => 'auth','namespace' => 'App\Http\Controllers'], func
 	});
 	$app->group(['prefix' => 'car','namespace' => 'App\Http\Controllers'], function() use ($app) {
 		$app->post('/', ['uses' => 'CarController@postCar', ]);
+		$app->get('/brand',['uses'=>'CarController@getCarBrands']);
+		$app->get('/model/{search}',['uses'=>'CarController@getCarModels']);
 		$app->get('/', ['uses' => 'CarController@getCars', ]);
 		$app->get('/{search}', ['uses' => 'CarController@getCar', ]);
 		$app->delete('/{id}', ['uses' => 'CarController@delete', ]);
