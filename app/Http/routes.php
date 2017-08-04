@@ -30,7 +30,8 @@ $app->group(['middleware' => 'auth','namespace' => 'App\Http\Controllers'], func
 	$app->group(['prefix' => 'customer','namespace' => 'App\Http\Controllers'], function() use ($app) {
 		$app->post('/', ['uses' => 'CustomerController@postCustomer', ]);
 		$app->get('/', ['uses' => 'CustomerController@getCustomers', ]);
-		$app->get('/{search}', ['uses' => 'CustomerController@getCustomer', ]);
+		$app->get('search/{search}', ['uses' => 'CustomerController@getCustomer', ]);
+		$app->get('/{id}', ['uses' => 'CustomerController@getCustomerById', ]);
 		$app->delete('/{id}', ['uses' => 'CustomerController@delete', ]);
 	});
 	$app->get('description/{type}', ['uses' => 'DescriptionController@get', ]);
