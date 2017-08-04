@@ -43,6 +43,15 @@ class CustomerController extends Controller
 
         return Response::json($customers);
     }
+    public function getCustomerById($id){
+        //$users = Customer::with(['gender','store'])->find($search);
+        $customer = Customer::find($id);
+        if($customer) {
+            return Response::json($customer);
+        }
+
+        return Response::internalError('Unable to create the store');   
+    }
 
     public function getCustomer($search){
         // $items = DB::table('stores')->select('id','description','tag','address')

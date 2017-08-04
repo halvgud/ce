@@ -68,8 +68,8 @@ class UserController extends Controller
 
         return Response::internalError('Unable to create the store');   
     }
-    public function getUserById($search){
-        $users = User::with(['gender','store'])->find($search);
+    public function getUserById($id){
+        $users = User::with(['gender','store'])->find($id);
         if($users) {
             return Response::json($users);
         }
